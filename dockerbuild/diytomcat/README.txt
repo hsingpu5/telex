@@ -1,0 +1,2 @@
+docker run -d -p8080:8080 --name hptomcat -v /home/hp/build/tomcat/test:/usr/local/apache-tomcat-9.0.58
+/webapps/test -v /home/hp/build/tomcat/tomcatlogs/:/usr/local/apache-tomcat-9.0.58/logs diytomcat
