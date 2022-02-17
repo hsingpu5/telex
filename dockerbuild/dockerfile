@@ -1,0 +1,13 @@
+FROM centos:7
+MAINTAINER hsingpu<1927833039@qq.com>
+
+ENV MYPATH /usr/local/test
+WORKDIR ${MYPATH}
+
+RUN yum -y install wget
+RUN yum -y install net-tools
+
+EXPOSE 80
+
+#CMD ["/bin/bash"]
+ENTRYPOINT ["/bin/bash"]
