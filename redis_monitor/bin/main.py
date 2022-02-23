@@ -4,7 +4,7 @@
 
 import os
 import sys
-import redis  # 安装python的redis模块  pip install redis 或离线安装
+import redis  # 安装python的redis模块  pip install redis 或离线安装 pip download redis
 import time
 import datetime
 
