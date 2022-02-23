@@ -30,11 +30,12 @@ def redis_check(k, interval=60):
         if rsl:
             print(datetime.datetime.now(), 'key is exists')
             with open(file=logfile, mode='a', encoding='utf-8') as f:
-                f.write(str(datetime.datetime.now()) + 'key is exists\r\n')
+                f.write('{0} __ {1} __ key is exists\r\n'.format(str(datetime.datetime.now()), str(k)))
         else:
             print(datetime.datetime.now(), 'key is missing')
             with open(file=logfile, mode='a', encoding='utf-8') as f:
-                f.write(str(datetime.datetime.now()) + 'key is missing\r\n')
+                f.write('{0} __ {1} __ key is missing\r\n'.format(str(datetime.datetime.now()), str(k)))
+
             # break
         time.sleep(interval)
 
