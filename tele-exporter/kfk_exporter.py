@@ -5,10 +5,7 @@ import time
 
 # 定义数据类型，metric，describe(描述)，标签
 
-kfk_process = Gauge('kfk_process', '状态: kafka进程 ', ['instance'])
-
-
-# kfk_process_num = Gauge('kfk_process', 'broker计数: Calculate the number of kafka processing num ', ['instance'])
+kfk_process = Gauge('kfk_process', '状态: kafka进程是否存在 ', ['instance'])
 
 
 def get_kfk_process():
@@ -16,24 +13,20 @@ def get_kfk_process():
     state = 0
     broker = os.popen("sudo ps -ef | grep kafkaBrokers |grep -v 'grep' | wc -l")
 
-    broker.close()
     if broker:
         state = 1
+    broker.close()
     # 获取主机ip
-    f = os.popen("hostname -i | awk '{print $2}'")
+    f = os.popen("hostname -i  ")
     ip = f.read().strip('\n')
     f.close()
+    print('获取信息%s,%s' % (ip, state))
     kfk_process.labels(instance=ip).set(state)
-
-
-#    kfk_process_num.labels(instance=state).set(state)
-#   kfk_process.labels(num=)
-# kfk_process.labels(instance=ip).set()
 
 
 if __name__ == "__main__":
     # 暴露端口
-    start_http_server(8000)
+    start_http_server(9101)
     # 不断传入数据
     while True:
         get_kfk_process()
