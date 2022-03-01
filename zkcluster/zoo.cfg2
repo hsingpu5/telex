@@ -1,0 +1,10 @@
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/data/zookeeper/zk2/data
+clientPortAddress=133.0.124.212
+clientPort=12182
+
+server.1=133.0.124.212:2191:13181
+server.2=133.0.124.212:2192:13182
+server.3=133.0.124.212:2193:13183
