@@ -6,8 +6,7 @@ import os
 kfkdir = '/data/kafka/kafka01/'
 topicname = 'quickstart-events04'
 bootstrap = '133.0.124.212:39092'
-command = r"%sbin/kafka-topics.sh --describe --topic %s --bootstrap-server %s | grep -v Configs | awk -F ' ' '{print $6}'" % (
-    kfkdir, topicname, bootstrap)
+command = r"%sbin/kafka-topics.sh --describe --topic %s --bootstrap-server %s | grep -v Configs | awk -F ' ' '{print $6}'" % (kfkdir, topicname, bootstrap)
 
 # print(command)
 commandres = os.popen(command)
