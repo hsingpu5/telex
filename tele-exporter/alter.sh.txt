@@ -1,0 +1,18 @@
+#!/bin/bash
+alerts1='[
+  {
+    "labels": {
+       "instance": "133.x.x.212",
+       "serverity": "warning",
+       "cluster":"amc",
+       "alertType":"amc_change",
+       "alertname":"amc_alert",
+       "paasServiceName":"kfk-test"
+     },
+     "annotations": {
+        "description": "kfk报警测试请忽略  ",
+        "summary": "kfk报警测试"
+      }
+  }
+]'
+curl -XPOST -d"$alerts1" http://133.0.206.49:9093/api/v1/alerts
