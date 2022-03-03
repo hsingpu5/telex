@@ -22,15 +22,15 @@ topicname = 'plca_group_yc_lte3_topic_4'
 bootstrap = '133.0.124.212:39092'
 zookeeper = "133.0.208.212:2186,133.0.208.213:2186,133.0.208.214:2186"
 
-brkid = {1, 2, 3, 4, 5, 6}
-brkid = {1, 2, 3, 4, 5, 6, 7}  # debug
+brkid = {1, 2, 3, 4, 5, 6, }
+# brkid = {1, 2, 3, 4, 5, 6, 7}  # debug
 if not debug:
-    command = r"%sbin/kafka-topics.sh --describe --topic %s --zookeeper %s | grep -v Configs | awk -F ' ' '{print $10}' | sort | uniq" % (
-        kfkdir, topicname, zookeeper)
+    command = r"%sbin/kafka-topics.sh --describe --topic %s --zookeeper %s | grep -v Configs | awk -F ' ' '{print $10}' | sort |uniq" % (
+    kfkdir, topicname, zookeeper)
 
 else:
     command = r"%sbin/kafka-topics.sh --describe --topic %s --bootstrap-server %s | grep -v Configs | awk -F ' ' '{print $6}'" % (
-        kfkdir, topicname, bootstrap)
+    kfkdir, topicname, bootstrap)
 
 print(command)
 commandres = os.popen(command)
@@ -42,21 +42,18 @@ print('在运行brkid:', brkset)
 
 
 def brkgrep():
-    downid = []
     for i in brkid:
         i = str(i)
         if i not in brkset:
             print(i, 'broker退服')
-            downid.append(i)
-    return downid
+            return i
 
 
 if __name__ == '__main__':
-    res = brkgrep()
-    downid = str(res)
+    downid = brkgrep()
     summary = 'kfk进程状态'
-    description = str(ip + downid + ': <--brokerID退服')
-    description = str('报警测试请忽略' + ip + downid + ': <--brokerID退服')
+    description = str(ip + str(downid) + ': <--brokerID退服 | 策略中心 | 蔡俊南')
+    # description = str('报警测试请忽略'+ip + str(downid)+': <--brokerID退服')
     print('退服列表:', downid)
     if downid:
         print('发送报警')
