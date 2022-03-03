@@ -25,12 +25,18 @@ zookeeper = "133.0.208.212:2186,133.0.208.213:2186,133.0.208.214:2186"
 brkid = {1, 2, 3, 4, 5, 6, }
 # brkid = {1, 2, 3, 4, 5, 6, 7}  # debug
 if not debug:
-    command = r"%sbin/kafka-topics.sh --describe --topic %s --zookeeper %s | grep -v Configs | awk -F ' ' '{print $10}' | sort |uniq" % (
-    kfkdir, topicname, zookeeper)
+    command = (
+                  "%sbin/kafka-topics.sh --describe "
+                  "--topic %s --zookeeper %s | "
+                  "grep -v Configs | awk -F ' ' '{print $10}' | sort |uniq"
+              ) % (kfkdir, topicname, zookeeper)
 
 else:
-    command = r"%sbin/kafka-topics.sh --describe --topic %s --bootstrap-server %s | grep -v Configs | awk -F ' ' '{print $6}'" % (
-    kfkdir, topicname, bootstrap)
+    command = (
+                  "%sbin/kafka-topics.sh --describe "
+                  "--topic %s --bootstrap-server %s | "
+                  "grep -v Configs | awk -F ' ' '{print $10}' | sort |uniq"
+              ) % (kfkdir, topicname, bootstrap)
 
 print(command)
 commandres = os.popen(command)
