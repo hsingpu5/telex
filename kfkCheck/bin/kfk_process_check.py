@@ -33,6 +33,7 @@ if __name__ == '__main__':
 
     state = get_kfk_state()
     summary = 'kfk进程状态'
-    description = ip + ':jps KAFKA进程不存在'
+    description = str(ip + ':  KAFKA进程不存在')
     if not state:
-        alterinfo(ip, summary, description, paasServiceName='kfkgrp')
+        res = alterinfo(ip, summary, description, paasServiceName='kfkgrp')
+        print('发送状态', res)
