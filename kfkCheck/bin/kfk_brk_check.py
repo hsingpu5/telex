@@ -8,7 +8,7 @@ ret = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 
 sys.path.insert(0, ret)
 
-# from kfkCheck.bin.alter import alterinfo
+from kfkCheck.bin.alter import alterinfo
 
 debug = False
 # debug=True
@@ -39,7 +39,22 @@ brkset = set(res.replace('\n', ','))
 brkset.discard(',')
 # brkset={'6', '2', '5', '4', '3', '1'} #debugtest
 print('在运行brkid:', brkset)
-for i in brkid:
-    i = str(i)
-    if i not in brkset:
-        print(i, 'broker退服')
+def brkgrep():
+    downid=[]
+    for i in brkid:
+        i = str(i)
+        if i not in brkset:
+            print(i, 'broker退服')
+            downid.append(i)
+    return downid
+if __name__ == '__main__':
+    res=brkgrep()
+    downid=str(res)
+    summary = 'kfk进程状态'
+    description = str(ip + downid+': <--brokerID退服')
+    description = str('报警测试请忽略'+ip + downid+': <--brokerID退服')
+    print ('退服列表:',downid)
+    if  downid:
+        print ('发送报警')
+        res = alterinfo(ip, summary, description, paasServiceName='kfkgrp')
+        print('发送状态', res)
