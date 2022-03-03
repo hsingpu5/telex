@@ -5,9 +5,9 @@ import os
 import sys
 
 ret = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# print(ret)
+
 sys.path.insert(0, ret)
-# print(sys.path)
+
 #from kfkCheck.bin.alter import alterinfo
 
 debug = False
@@ -16,7 +16,7 @@ f = os.popen("hostname -i  ")
 ip = f.read().strip('\n')
 f.close()
 
-# kafka 路径  topic名称  kafka地址端口
+# kafka 路径  topic名称  kafka地址端口(生产环境传参无效)
 kfkdir = '/app/ofcs/kafka/kafka-server/'
 topicname = 'plca_group_yc_lte3_topic_4'
 bootstrap = '133.0.124.212:39092'
