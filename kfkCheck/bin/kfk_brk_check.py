@@ -16,7 +16,7 @@ f = os.popen("hostname -i  ")
 ip = f.read().strip('\n')
 f.close()
 
-# kafka 路径  topic名称  kafka地址端口(生产环境传参无效)
+# kafka 路径  topic名称  kafka地址端口(生产环境传参无效) zookeeper地址(生产使用)
 kfkdir = '/app/ofcs/kafka/kafka-server/'
 topicname = 'plca_group_yc_lte3_topic_4'
 bootstrap = '133.0.124.212:39092'
