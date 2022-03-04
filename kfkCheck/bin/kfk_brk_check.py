@@ -59,6 +59,7 @@ if __name__ == '__main__':
     downid = brkgrep()
     summary = 'kfk进程状态'
     description = str(ip + str(downid) + ': <--brokerID退服 | 策略中心 | 蔡俊南')
+    description = str('策略中心kakfa集群异常,brokerID退服.|IP:%s,brokerID:%s.|蔡俊南' % (ip, str(downid)))
     # description = str('报警测试请忽略'+ip + str(downid)+': <--brokerID退服')
     print('退服列表:', downid)
     if downid:
