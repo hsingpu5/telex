@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#cd /app/pinpoint/pp-col-north/lib
+cp ./catalina.jar  ./catalina.old.jar
+unzip -d catalina   ./catalina.jar
+#cp ./ServerInfo.properties ./catalina/org/apache/catalina/util/ServerInfo.properties
+cat <<EOF>./catalina/org/apache/catalina/util/ServerInfo.properties
+server.info=Apache Tomcat
+server.number=0.0.0.0
+server.built=Oct 6 2020 14:11:46 UTC
+EOF
+cd catalina
+jar -cvf catalina.new.jar ./*
+cp ./catalina.new.jar ../catalina.jar
