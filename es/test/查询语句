@@ -1,0 +1,26 @@
+#kibana语句
+
+
+#匹配apiname及时间限定组合查询
+GET eopstat-2022.04.02/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "apiName": "湖北根据产品实例ID判断产品是否为5G"
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "gte": "now-30s",
+              "lte": "now"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
