@@ -1,7 +1,7 @@
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 from requests.auth import HTTPBasicAuth
-from sqlalchemy import create_engine
+# from sqlalchemy import create_engine
 import datetime
 import time
 
@@ -15,14 +15,13 @@ ttimearray = time.strptime(t, "%Y-%m-%d")
 ttime = int(time.mktime(ttimearray))
 
 SEARCHCONFIG = {
-                   'es': {
-                             'address': ** *,
-                   'username': ** *,
-               'password': '***',
-                           'indexlesson': '***',
-'indexlessontype': '***',
-}
-}
+    'es': {
+        'address': "  ",
+        'username': "",
+        'password': '',
+        'indexlesson': '',
+        'indexlessontype': '', }}
+
 
 class SearchConfig():
 

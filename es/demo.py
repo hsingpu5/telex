@@ -1,7 +1,11 @@
+import os, sys
 from elasticsearch import Elasticsearch
 from datetime import datetime
 import json
-from .conf import es_auth
+
+BASE_DIR = os.path.dirname(os.path.abspath('__file__'))
+sys.path.insert(0, BASE_DIR)
+from conf import es_auth
 
 # es连接信息
 
@@ -58,8 +62,9 @@ def writefile(info):
         f.write(info)
 
 
+indexname = getindexname()  # 获取当前索引名
+res = getinfo(indexname, body)  # 传入索引名 及查询语句
+print(res)
+writefile(res)  # 写入文件
 if __name__ == '__main__':
-    indexname = getindexname()  # 获取当前索引名
-    res = getinfo(indexname, body)  # 传入索引名 及查询语句
-    print(res)
-    writefile(res)  # 写入文件
+    pass
