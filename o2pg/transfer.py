@@ -17,7 +17,7 @@ def o2pg(ora_file, pg_file):
 
                 line = re.sub(r"NUMBER\([1-9]\)", 'int4', line)
                 line = line.replace('NUMBER', 'numeric')
-                line = line.replace('BINARY_FLOAT', 'float4')
+                #line = line.replace('BINARY_FLOAT', 'float4')
                 line = line.replace('TIMESTAMP', 'timestamp')
                 line = line.replace('VARCHAR2', 'varchar')
                 line = line.replace('CHAR', 'char')
