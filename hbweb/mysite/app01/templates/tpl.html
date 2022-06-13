@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ n1 }}
+{{ n2.1 }}
+{% for i in n2 %}
+    {{ i }}
+{% endfor %}
+<hr/>
+
+<ul>
+    {% for k,v in n3.items %}
+        <li>{{ k }}={{ v }}</li>
+
+    {% endfor %}</ul>
+{{ n4.1.name }}
+{% if n1 == "hp" %}
+    <h1>AAAAAAA</h1>{% else %}
+    BBB{% endif %}
+</body>
+</html>
