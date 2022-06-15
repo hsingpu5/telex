@@ -50,6 +50,6 @@ data_dic = {
     'IPS': {},
 }
 checktime=str(time.time())[0:14]
-
+data_dic['zookeeper']
 def mr(request):
     return render(request, 'mr.html', {"data_dic": data_dic})

@@ -4,32 +4,29 @@ import requests
 from app01.views import checktime
 import json
 
-zkinfo = {}
-zk_lst = set()
-zkurl = (
-    'http://133.0.206.49:9516',
-)
-
 
 def zkgather(cluster):
-    for i in zkurl:
-        url_t = 'http://133.0.206.49:9516/api/v1/query?query=zk_up&time=1655129309.095&_=1655129118105'
+    zk_dic = {}
+    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('zk_up', checktime,)
+    res = requests.get(url)
+    if res.status_code == 200:
 
-        url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('zk_up', checktime,)
+        res = eval(res.text).get('data').get('result')
 
-        res = requests.get(url_t)
-        if res.status_code == 200:
+        for e in res:
+            # print(e)
+            clustername = e.get('metric').get('cluster')
+            if clustername == cluster:
+                addr = e.get('metric').get('addr')
+                value = e.get('value')[1]
 
-            res = eval(res.text).get('data').get('result')
+                zk_dic.update({addr: value})
+        print(zk_dic)
 
-            for e in res:
-                print(e)
-                clustername = e.get('metric').get('cluster')
-                if clustername == cluster:
-                    addr = e.get('metric').get('addr')
-
-                    zk_lst.add(str(addr))
-            return len(zk_lst)
+        live = 0
+        for i in zk_dic.values():
+            live += int(i)
+        return len(zk_dic), live
 
 
 if __name__ == '__main__':
