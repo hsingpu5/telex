@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse
 import requests
 import time
+from app01.monitorcollect.zkcollect import zookeeper_res
+
 
 # Create your views here.
 
@@ -42,14 +44,17 @@ def something(request):
 
 
 data_dic = {
-    'nginx': {'集群名':None},
+    'nginx': {'集群名': None},
     'zookeeper': {},
     'redis': {},
     'kafka': {},
     'elasticsearch': {},
     'IPS': {},
 }
-checktime=str(time.time())[0:14]
-data_dic['zookeeper']
+checktime = str(time.time())[0:14]
+data_dic['zookeeper'] = zookeeper_res()
+print(data_dic)
+
+
 def mr(request):
     return render(request, 'mr.html', {"data_dic": data_dic})

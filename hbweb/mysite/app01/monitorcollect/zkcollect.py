@@ -1,7 +1,8 @@
 # zookeeper monitor information
 
-import requests
-from app01.views import checktime
+import requests,time
+#from app01.views import checktime
+checktime=str(time.time())[0:14]
 import json
 
 
@@ -26,7 +27,7 @@ def zkgather(cluster):
         live = 0
         for i in zk_dic.values():
             live += int(i)
-        return len(zk_dic), live
+        return [len(zk_dic), live]
 
 
 def max_latency(cluster):

@@ -27,12 +27,56 @@
     <div class="col-md-1">.col-md-1</div>
 </div>
 <hr/>
-{% for k,v in data_dic.items %}
-    <button class="btn btn-primary">{{ k }}</button>
-    <button class="btn btn-success">{% for k,v in v.items %}
-        {{ k }}:{{ v }}
-    {% endfor %}</button>
 
+{% for k,v in data_dic.items %}
+    <table class="table table-condensed table-bordered table-hover">
+        <button class="btn btn-primary">{{ k }}  :</button>
+        <br/>
+        <tr class="info">
+            {% if k == 'zookeeper' %}
+                <button class="btn btn-block">
+                    <td>集群名</td>
+                    <td>主机数量/正常主机</td>
+                    <td>请求最大延迟</td>
+                    <td>待处理请求数</td>
+                    <td>连接数</td>
+                
+                </button>
+            {% else %}
+                <button class="btn btn-block">
+                    <td>集群名</td>
+                    <td>总数/存活</td>
+                    <td>最大连接</td>
+                    <td>等待请求数</td>
+                </button>
+            {% endif %}
+        </tr>
+        <br/>
+
+        {% for k,v in v.items %}
+            <tr class="warning">
+                {#集群名#}
+                <td>
+                    <button class="btn btn-warning">{{ k }}</button>
+                </td>
+                {#集群值#}
+                {% for value in v %}
+                    <td>
+                        {% if forloop.counter == 1 %}
+                            {% if value.0 == value.1 %}
+                                <button class="btn btn-success"> {{ value.0 }} / {{ value.1 }}  </button>
+                            {% else %}
+                                <button class="btn btn-danger"> {{ value.0 }} / {{ value.1 }}    </button>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-success"> {{ value }}    </button>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+    </table>
     <br/>
 {% endfor %}
 <hr/>
