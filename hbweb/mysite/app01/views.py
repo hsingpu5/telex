@@ -57,4 +57,4 @@ print(data_dic)
 
 
 def mr(request):
-    return render(request, 'mr.html', {"data_dic": data_dic})
+    return render(request, 'mrs.html', {"data_dic": data_dic})
