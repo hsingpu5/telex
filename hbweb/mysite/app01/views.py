@@ -51,7 +51,8 @@ data_dic = {
     'elasticsearch': {},
     'IPS': {},
 }
-checktime = str(time.time())[0:14]
+
+# checktime = str(time.time())[0:14]
 data_dic['zookeeper'] = zookeeper_res()
 print(data_dic)
 
