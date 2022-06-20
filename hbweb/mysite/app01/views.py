@@ -50,22 +50,11 @@ def something(request):
     return HttpResponse('someth')
 
 
-data_dic = {
-    'nginx': {'集群名': None},
-    'zookeeper': {},
-    'redis': {},
-    'kafka': {},
-    'es': {},
-    'ips': {},
-}
+data_dic = {'nginx': nginx_res(), 'kafka': kafka_res(), 'zookeeper': zookeeper_res(), 'redis': redis_res(),
+            'es': es_res(), 'ips': {'IPS': ['√', '√', '√']}}
 
 # checktime = str(time.time())[0:14]
-data_dic['zookeeper'] = zookeeper_res()
-data_dic['nginx'] = nginx_res()
-data_dic['redis'] = redis_res()
-data_dic['kafka'] = kafka_res()
-data_dic['es'] = es_res()
-data_dic['ips'] = {'IPS': ['√', '√', '√']}
+
 print(data_dic)
 
 
