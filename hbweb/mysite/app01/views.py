@@ -50,8 +50,8 @@ def something(request):
     return HttpResponse('someth')
 
 
-data_dic = {'nginx': nginx_res(), 'kafka': kafka_res(), 'zookeeper': zookeeper_res(), 'redis': redis_res(),
-            'es': es_res(), 'ips': {'IPS': ['√', '√', '√']}}
+data_dic = {'nginx': nginx_res(), 'kafka': kafka_res(),
+            'es': es_res(), 'ips': {'IPS': ['√', '√', '√']}, 'zookeeper': zookeeper_res(), 'redis': redis_res(), }
 
 # checktime = str(time.time())[0:14]
 
