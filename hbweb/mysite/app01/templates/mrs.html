@@ -28,8 +28,22 @@
     <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
     <!-- summernote -->
     <link rel="stylesheet" href="{% static 'plugins/summernote/summernote-bs4.min.css' %}">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+<script type="text/javascript">
+
+    function f2() {
+        new Date();
+        res = new Date().toLocaleTimeString()
+        return res;
+    }
+
+
+    //获取到     页面id为dateTime的div，这个名字自己取个就可以，我取了这个
+    setInterval("document.getElementById('dataTime').innerHTML = (f2())", 1000);
+
+</script>
 <div class="wrapper">
 
     <!-- Preloader -->
@@ -862,7 +876,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Dashboard</h1>
+                        <h1 class="m-0">亚信paas组件巡检报告</h1>
+                        <br>
+                        <h5>
+                            <div id="dataTime"></div>
+                        </h5>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -893,42 +911,155 @@
                                     <td>连接数</td>
 
                                 </button>
-                            {% else %}
+                            {% elif k == 'nginx' %}
                                 <button class="btn btn-block">
                                     <td>集群名</td>
-                                    <td>总数/存活</td>
-                                    <td>最大连接</td>
-                                    <td>等待请求数</td>
+                                    <td>主备状态</td>
+                                    <td>平均响应时间</td>
+                                    <td>HTTP连接数</td>
+                                </button>
+                            {% elif k == 'redis' %}
+                                <button class="btn btn-block">
+                                    <td>集群名</td>
+                                    <td>内存用量</td>
+                                    <td>故障hash槽数量</td>
+                                    <td>同步状态</td>
+                                </button>
+                              {% elif k == 'kafka' %}
+                                <button class="btn btn-block">
+                                    <td>集群名</td>
+                                    <td>broker状态</td>
+                                    <td>topic状态</td>
+                                    <td>积压情况</td>
+                                </button>
+                               {% elif k == 'es' %}
+                                <button class="btn btn-block">
+                                    <td>集群名</td>
+                                    <td>集群状态</td>
+                                    <td>节点数</td>
+                                    <td>数据节点数</td>
+                                </button>
+                               {% elif k == 'ips' %}
+                                <button class="btn btn-block">
+                                    <td>IPS容器平台</td>
+                                    <td>节点状态</td>
+                                    <td>api-server</td>
+                                    <td>etcd</td>
                                 </button>
                             {% endif %}
                         </tr>
                         <br/>
-
-                        {% for k,v in v.items %}
-                            <tr class="warning">
-                                {#集群名#}
-                                <td>
-                                    <button class="btn btn-warning">{{ k }}</button>
-                                </td>
-                                {#集群值#}
-                                {% for value in v %}
+                        {% if k == 'zookeeper' %}
+                            {% for k,v in v.items %}
+                                <tr class="warning">
+                                    {#集群名#}
                                     <td>
-                                        {% if forloop.counter == 1 %}
-                                            {% if value.0 == value.1 %}
-                                                <button class="btn btn-success"> {{ value.0 }}
-                                                    / {{ value.1 }}  </button>
-                                            {% else %}
-                                                <button class="btn btn-danger"> {{ value.0 }}
-                                                    / {{ value.1 }}    </button>
-                                            {% endif %}
-                                        {% else %}
-                                            <button class="btn btn-success"> {{ value }}    </button>
-                                        {% endif %}
+                                        <button class="btn btn-warning">{{ k }}</button>
                                     </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+                                    {#集群值#}
+                                    {% for value in v %}
+                                        <td>
+                                            {% if forloop.counter == 1 %}
+                                                {% if value.0 == value.1 %}
+                                                    <button class="btn btn-success"> {{ value.0 }}
+                                                        / {{ value.1 }}  </button>
+                                                {% else %}
+                                                    <button class="btn btn-danger"> {{ value.0 }}
+                                                        / {{ value.1 }}    </button>
+                                                {% endif %}
+                                            {% else %}
+                                                <button class="btn btn-success"> {{ value }}    </button>
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% elif k == 'nginx' %}
+                            {% for k,v in v.items %}
+                                <tr class="warning">
+                                    {#集群名#}
+                                    <td>
+                                        <button class="btn btn-warning">{{ k }}</button>
+                                    </td>
+                                    {#集群值#}
+                                    {% for value in v %}
+                                        <td>
 
+                                            <button class="btn btn-success"> {{ value }}    </button>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% elif k == 'redis' %}
+                            {% for k,v in v.items %}
+                                <tr class="warning">
+                                    {#集群名#}
+                                    <td>
+                                        <button class="btn btn-warning">{{ k }}</button>
+                                    </td>
+                                    {#集群值#}
+                                    {% for value in v %}
+                                        <td>
+
+                                            <button class="btn btn-success"> {{ value }}    </button>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% elif k == 'kafka' %}
+                            {% for k,v in v.items %}
+                                <tr class="warning">
+                                    {#集群名#}
+                                    <td>
+                                        <button class="btn btn-warning">{{ k }}</button>
+                                    </td>
+                                    {#集群值#}
+                                    {% for value in v %}
+                                        <td>
+
+                                            <button class="btn btn-success"> {{ value }}    </button>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% elif k == 'es' %}
+                            {% for k,v in v.items %}
+                                <tr class="warning">
+                                    {#集群名#}
+                                    <td>
+                                        <button class="btn btn-warning">{{ k }}</button>
+                                    </td>
+                                    {#集群值#}
+                                    {% for value in v %}
+                                        <td>
+
+                                            <button class="btn btn-success"> {{ value }}    </button>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% elif k == 'ips' %}
+                            {% for k,v in v.items %}
+                                <tr class="warning">
+                                    {#集群名#}
+                                    <td>
+                                        <button class="btn btn-warning">{{ k }}</button>
+                                    </td>
+                                    {#集群值#}
+                                    {% for value in v %}
+                                        <td>
+
+                                            <button class="btn btn-success"> {{ value }}    </button>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                     </table>
                     <br/>
                 {% endfor %}
@@ -988,5 +1119,7 @@
 <script src="{% static 'js/demo.js' %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+
 </body>
 </html>

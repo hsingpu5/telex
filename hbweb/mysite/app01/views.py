@@ -2,6 +2,13 @@ from django.shortcuts import render, HttpResponse
 import requests
 import time
 from app01.monitorcollect.zkcollect import zookeeper_res
+from app01.monitorcollect.ngxcollect import nginx_res
+from app01.monitorcollect.rediscollect import redis_res
+from app01.monitorcollect.kafkacollect import kafka_res
+from app01.monitorcollect.escollect import es_res
+
+
+# from app01.monitorcollect.ipscollect import ips_res
 
 
 # Create your views here.
@@ -48,14 +55,20 @@ data_dic = {
     'zookeeper': {},
     'redis': {},
     'kafka': {},
-    'elasticsearch': {},
-    'IPS': {},
+    'es': {},
+    'ips': {},
 }
 
 # checktime = str(time.time())[0:14]
 data_dic['zookeeper'] = zookeeper_res()
+data_dic['nginx'] = nginx_res()
+data_dic['redis'] = redis_res()
+data_dic['kafka'] = kafka_res()
+data_dic['es'] = es_res()
+data_dic['ips'] = {'IPS': ['√', '√', '√']}
 print(data_dic)
 
 
 def mr(request):
+    print(data_dic)
     return render(request, 'mrs.html', {"data_dic": data_dic})

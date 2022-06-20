@@ -1,122 +1,120 @@
 # zookeeper monitor information
 
-import requests,time
-#from app01.views import checktime
-checktime=str(time.time())[0:14]
+import requests, time
+
+# from app01.views import checktime
+checktime = str(time.time())[0:14]
 import json
 
 
-def zkgather(cluster):
+def redisstatus(cluster):
     zk_dic = {}
-    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('zk_up', checktime,)
+    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('redis_cluster_state', checktime,)
     res = requests.get(url)
     if res.status_code == 200:
 
         res = eval(res.text).get('data').get('result')
-
+        print(res)
         for e in res:
             # print(e)
             clustername = e.get('metric').get('cluster')
             if clustername == cluster:
-                addr = e.get('metric').get('addr')
+
                 value = e.get('value')[1]
 
-                zk_dic.update({addr: value})
-        # print(zk_dic)
-
-        live = 0
-        for i in zk_dic.values():
-            live += int(i)
-        return [len(zk_dic), live]
+                if value: return '正常'
 
 
-def max_latency(cluster):
-    zk_lst = []
-    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('zk_max_latency', checktime,)
+def memuser(cluster):
+    value = 0
+    total = 0
+    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('redis_memory_used_bytes', checktime,)
     res = requests.get(url)
     if res.status_code == 200:
 
         res = eval(res.text).get('data').get('result')
-
+        # print(res)
         for e in res:
             # print(e)
             clustername = e.get('metric').get('cluster')
+
             if clustername == cluster:
-                value = e.get('value')[1]
-
-                zk_lst.append(int(value))
-    # print(zk_lst)
-
-    return max(zk_lst)
+                value += int(e.get('value')[1])
+    # print(value/1000/1000/1000)
+    return str(value / 1000 / 1000 / 1000)[:3] + 'G'
 
 
-def zk_outstanding_requests(cluster):
-    zk_lst = []
-    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('zk_outstanding_requests', checktime,)
+def slots_fail(cluster):
+    value = 0
+
+    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('redis_cluster_slots_fail', checktime,)
     res = requests.get(url)
     if res.status_code == 200:
 
         res = eval(res.text).get('data').get('result')
-
-        for e in res:
-            #  print(e)
-            clustername = e.get('metric').get('cluster')
-            if clustername == cluster:
-                value = e.get('value')[1]
-
-                zk_lst.append(int(value))
-
-    return sum(zk_lst)
-
-
-def zk_num_alive_connections(cluster):
-    zk_lst = []
-    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('zk_num_alive_connections', checktime,)
-    res = requests.get(url)
-    if res.status_code == 200:
-
-        res = eval(res.text).get('data').get('result')
-
+        # print(res)
         for e in res:
             # print(e)
             clustername = e.get('metric').get('cluster')
+
             if clustername == cluster:
-                value = e.get('value')[1]
-
-                zk_lst.append(int(value))
-
-    return max(zk_lst)
+                value += int(e.get('value')[1])
+    # print(value/1000/1000/1000)
+    return value
 
 
-clusternames = [
-    'csf',
-    'databus',
-    'ddal',
-    'mlcache',
-    'hlog',
-    '计费ABM集群ZK',
-    '计费批价荆州武汉ZK',
-    '计费批价采集ZK',
-    '计费批价策略ZK',
-    '计费账务DUBBO-A',
-    '计费账务DUBBO-B',
-    '计费账务DUBBO-C',
-    '计费支付DUBBO-A',
-    '计费支付DUBBO-B',
+def redis_up(cluster):
+    '''主从同步 判定是否up'''
+    value = 0
 
-]
+    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('redis_up', checktime,)
+    res = requests.get(url)
+    if res.status_code == 200:
+
+        res = eval(res.text).get('data').get('result')
+        # print(res)
+        for e in res:
+            # print(e)
+            clustername = e.get('metric').get('cluster')
+
+            if clustername == cluster:
+                value += int(e.get('value')[1])
+                if not value:
+                    return 'down'
+
+    # print(value/1000/1000/1000)
+    return 'up'
 
 
-def zookeeper_res():
+def clusters():
+    clusters_set = set()
+    url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s' % ('redis_cluster_known_nodes', checktime,)
+    res = requests.get(url)
+    if res.status_code == 200:
+
+        res = eval(res.text).get('data').get('result')
+        # print(res)
+        for e in res:
+            # print(e)
+            clustername = e.get('metric').get('cluster')
+
+            clusters_set.add(clustername)
+
+    # print(value/1000/1000/1000)
+    return clusters_set
+
+
+def redis_res():
     res = {}
-    for cluster in clusternames:
-        live = zkgather(cluster)
-        max_ = max_latency(cluster)
-        req = zk_outstanding_requests(cluster)
-        conn = zk_num_alive_connections(cluster)
-        res.update({cluster: [live, max_, req, conn, ]})
+    for cluster in clusters():
+        mem = memuser(cluster)
+        stat = redis_up(cluster)
+        sltfail = slots_fail(cluster)
+        res.update({cluster: [mem, sltfail, stat]})
     return res
 
 
 if __name__ == '__main__':
-    print(zookeeper_res())
+    # print(redisstatus('CRM测试集群缓存246247'))
+    # print(memuser('CRM测试集群缓存246247'))
+    print(redis_res())

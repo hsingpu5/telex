@@ -95,7 +95,7 @@ clusternames = [
     'mlcache',
     'hlog',
     '计费ABM集群ZK',
-    '计费批价荆州武汉ZK',
+  #  '计费批价荆州武汉ZK',
     '计费批价采集ZK',
     '计费批价策略ZK',
     '计费账务DUBBO-A',
