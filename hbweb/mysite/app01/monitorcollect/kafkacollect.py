@@ -82,6 +82,22 @@ def consumer_lag(cluster):
     return max(consumer_lst)
 
 
+def jifeikfk():
+    all = {}
+    jifeikfk = requests.get('http://133.0.124.212:5000/kfk/v1/list')
+    res = json.loads(jifeikfk.text)
+    for x in res:
+        if x:
+            ip = x.split(' ')[0]
+            total_num = x.split(' ')[-1]
+            if ip in ['133.0.209.50', '133.0.209.51', '133.0.209.52', '133.0.209.53', '133.0.209.54', '133.0.209.55',
+                      '133.0.209.56', '133.0.209.57', '133.0.209.58', ]:
+                all.update({'采集计费A' + ip: [total_num, ]})
+            else:
+                all.update({'5G计费B' + ip: [total_num, ]})
+    return all
+
+
 def kafka_res():
     res_dic = {}
     for cluster in kfk_clsname():
@@ -90,13 +106,11 @@ def kafka_res():
         lag = consumer_lag(cluster)
         res_dic.update({cluster: [kfk, topic, lag]})
 
+    res_dic.update(jifeikfk())
     return res_dic
+    # return res_dic.update(jifeikfk())
 
-
-def jifeikfk():
-    jifeikfk = requests.get('133.0.124.212/kfk/v1/list')
-    print(jifeikfk)
 
 if __name__ == '__main__':
-    #print(kafka_res())
-    print(jifeikfk())
+    print(kafka_res())
+# print(jifeikfk())
