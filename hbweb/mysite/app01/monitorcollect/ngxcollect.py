@@ -52,6 +52,7 @@ def ngxgather(cluster):
     count = 0
     url = 'http://133.0.206.49:9516/api/v1/query?query=%s&time=%s&_=%s' % ('nginx_vts_upstream_requests_total',
                                                                            starttime, endtime)
+    print('url排查', url)
     res = requests.get(url)
     # print(res.status_code)
     if res.status_code == 200:
@@ -151,7 +152,11 @@ def main_connections(cluster):
 def nginx_res():
     all = {}
     for k, v in clusters.items():
-        all.update({k: [ngxgather(v), request_seconds_total(v), main_connections(v)]})
+        print('kv值排查', k, v)
+        try:
+            all.update({k: [ngxgather(v), request_seconds_total(v), main_connections(v)]})
+        except Exception:
+            pass
     return all
 
 

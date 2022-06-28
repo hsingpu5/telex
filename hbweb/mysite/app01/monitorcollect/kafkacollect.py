@@ -89,8 +89,14 @@ def kafka_res():
         topic = topicgather(cluster)
         lag = consumer_lag(cluster)
         res_dic.update({cluster: [kfk, topic, lag]})
+
     return res_dic
 
 
+def jifeikfk():
+    jifeikfk = requests.get('133.0.124.212/kfk/v1/list')
+    print(jifeikfk)
+
 if __name__ == '__main__':
-    print(kafka_res())
+    #print(kafka_res())
+    print(jifeikfk())
